@@ -3,3 +3,6 @@ export const USER_TYPE = {
     USER: 'user',
     AGENT: 'agent'
 }
+export const CONFIGURATION = {
+    KEY: 'clothName'
+}

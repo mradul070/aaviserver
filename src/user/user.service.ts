@@ -1,4 +1,3 @@
-import { MailerService } from '@nestjs-modules/mailer';
 import { Injectable, Request } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
@@ -8,7 +7,6 @@ import { CreateUserPayload } from './dto/createUser.dto';
 @Injectable()
 export class UserService {
   constructor(
-    private readonly mailerService: MailerService,
     @InjectModel(User.name)
     private readonly userModel: Model<UserDocument>,
 
@@ -17,13 +15,6 @@ export class UserService {
     return await this.userModel.create(body)
   }
   async getUser(@Request() req) {
-    const res = await this.mailerService.sendMail({
-      to: 'smradul599@gmail.com',
-      from: 'mradulj070@gmail.com',
-      subject: 'Hello',
-      text: 'Hello'
-    })
-    console.log(res)
     return req.user;
   }
 }

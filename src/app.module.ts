@@ -2,21 +2,13 @@ import { Module } from '@nestjs/common';
 import { AuthModule } from './auth/auth.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { UserModule } from './user/user.module';
-import { MailerModule } from '@nestjs-modules/mailer';
 import { AddressModule } from './address/address.module';
+import { ConfigurationModule } from './configuration/configuration.module';
 
 @Module({
   imports: [
-    MailerModule.forRoot({
-      transport: {
-        host: 'smtp.sendgrid.net',
-        auth: {
-          user: 'apikey',
-          pass: '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'
-        }
-      }
-    }),
     AuthModule,
+    ConfigurationModule,
     UserModule,
     AddressModule,
     MongooseModule.forRoot(
