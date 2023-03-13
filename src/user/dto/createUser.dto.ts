@@ -1,6 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEnum, IsNotEmpty, IsOptional } from 'class-validator';
+import { IsEnum, isNotEmpty, IsNotEmpty, IsOptional, ValidateIf } from 'class-validator';
 import { USER_TYPE } from 'src/constant';
+import { isReadable } from 'stream';
 
 export class CreateUserPayload {
   
@@ -10,12 +11,14 @@ export class CreateUserPayload {
     })
     @IsNotEmpty()
     name: string;
+
     @ApiProperty({
         description: 'Email',
         example: 'raj@gmail.com',
     })
     @IsNotEmpty()
     email: string;
+    
     @ApiProperty({
         description: 'Password',
         example: '123456',
@@ -45,4 +48,15 @@ export class CreateUserPayload {
     })
     @IsOptional()
     isActive: boolean;
+
+    @ApiProperty()
+    @ValidateIf(o => o.userType === USER_TYPE.BUSINESS)
+    @IsNotEmpty()
+    partyName: string
+
+
+    @ApiProperty()
+    @ValidateIf(o => o.userType === USER_TYPE.BUSINESS)
+    @IsNotEmpty()
+    gstin: string
 }

@@ -1,0 +1,10 @@
+version: '1'
+services:
+  nodejs:
+    build: .
+    container_name: aavi
+    restart: always
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/src/app

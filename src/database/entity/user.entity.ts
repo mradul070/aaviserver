@@ -1,4 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { IsNotEmpty, ValidateIf } from 'class-validator';
 import { HydratedDocument } from 'mongoose';
 import { USER_TYPE } from 'src/constant';
 
@@ -23,6 +24,16 @@ export class User {
 
   @Prop({default: true})
   isActive: boolean
+
+  @Prop()
+  @ValidateIf(o => o.userType === USER_TYPE.BUSINESS)
+  @IsNotEmpty()
+  partyName: string
+
+  @Prop()
+  @ValidateIf(o => o.userType === USER_TYPE.BUSINESS)
+  @IsNotEmpty()
+  gstin: string;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
