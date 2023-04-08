@@ -3,11 +3,13 @@ import {
   Controller,
   Get,
   Injectable,
+  Param,
   Post,
+  Query,
   Request,
   UseGuards,
 } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { CreateUserPayload } from './dto/createUser.dto';
 import { UserService } from './user.service';
@@ -18,8 +20,9 @@ import { UserService } from './user.service';
 export class UserController {
   constructor(private readonly userService: UserService) {}
   @Post()
-  async createUser(@Body() createUserDto: CreateUserPayload) { 
-    return await this.userService.createUser(createUserDto)
+  @UseGuards(JwtAuthGuard)
+  async createUser(@Body() createUserDto: CreateUserPayload, @Request() req) { 
+    return await this.userService.createUser(createUserDto, req)
   }
 
   @UseGuards(JwtAuthGuard)
@@ -27,9 +30,11 @@ export class UserController {
   async getUser(@Request() req) {
     return this.userService.getUser(req);
   }
-
-  // @Post('forget-password')
-  // async forgetPassword() {
-  //     // return this.userService.
-  // }
+  
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
+  @Get('/search')
+  async searchParties(@Query('searchBy') searchBy: string) {
+    return this.userService.searchParties(searchBy)
+  }
 }
