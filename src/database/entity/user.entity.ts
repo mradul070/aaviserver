@@ -2,11 +2,15 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { IsNotEmpty, ValidateIf } from 'class-validator';
 import { HydratedDocument } from 'mongoose';
 import { USER_TYPE } from 'src/constant';
+import { ObjectID, ObjectIdColumn } from 'typeorm';
 
 export type UserDocument = HydratedDocument<User>;
 
 @Schema({timestamps: true})
 export class User {
+  @ObjectIdColumn({primary: true})
+  id: ObjectID;
+
   @Prop({required: true})
   name: string;
 

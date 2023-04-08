@@ -7,7 +7,7 @@ export class LoginUserPayload {
     example: 'raj@gmail.com',
   })
   @IsNotEmpty()
-  email: string;
+  username: string;
   @ApiProperty({
     description: 'Password',
     example: '123456',

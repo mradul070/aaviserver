@@ -3,6 +3,7 @@ import { JwtService } from '@nestjs/jwt';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { User, UserDocument } from 'src/database/entity/user.entity';
+import { errorMessage } from 'src/shared/message/errorMessage';
 
 @Injectable()
 export class AuthService {
@@ -14,18 +15,20 @@ export class AuthService {
   async validateUser(username: string, password: string) {
     const user: any = await this.userModel
       .findOne({
-        email: username,
-        password: password,
+        mobileNumber: username,
       })
       .exec();
+    if (!user) {
+      return errorMessage.MOBILE_NUMBER_NOT_FOUND
+    }
     if (user && user.password === password) {
       const { password, ...rest } = user._doc;
       return rest;
     }
-    return null;
+    return errorMessage.INVALID_PASSWORD;
   }
   async login(user: any) {
-    const payload = { email: user.email, sub: user._id };
+    const payload = { mobileNumber: user.mobileNumber, sub: user._id };
     return {
       userId: user._id,
       accessToken: this.jwtService.sign(payload),

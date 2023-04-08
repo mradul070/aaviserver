@@ -4,9 +4,11 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { UserModule } from './user/user.module';
 import { AddressModule } from './address/address.module';
 import { ConfigurationModule } from './configuration/configuration.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
+    ConfigModule.forRoot(),
     AuthModule,
     ConfigurationModule,
     UserModule,
